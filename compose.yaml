@@ -1,0 +1,70 @@
+# Storage is mounted at the same absolute path everywhere, so absolute symlinks resolve in and out.
+x-storage: &storage ${TT_STORAGE:-${PWD}/my-beloved-linux-iso-collection}:${TT_STORAGE:-${PWD}/my-beloved-linux-iso-collection}
+
+x-qbt-env: &qbt-env
+  PUID: 1000
+  PGID: 1000
+  QBT_LEGAL_NOTICE: confirm
+  TT_STORAGE: ${TT_STORAGE:-${PWD}/my-beloved-linux-iso-collection}
+
+services:
+  vpn-config:
+    image: alpine:3
+    command: sh /vpn/make-wg0.sh
+    environment:
+      TT_VPN: ${TT_VPN:-warp}
+    volumes:
+      - ./vpn:/vpn:ro
+      - ./state/vpn:/out
+
+  gluetun:
+    image: qmcgaw/gluetun:v3
+    restart: unless-stopped
+    cap_add: [NET_ADMIN]
+    devices: [/dev/net/tun:/dev/net/tun]
+    environment:
+      VPN_SERVICE_PROVIDER: ${VPN_SERVICE_PROVIDER:-custom}
+      VPN_TYPE: ${VPN_TYPE:-wireguard}
+      OPENVPN_USER: ${OPENVPN_USER:-}
+      OPENVPN_PASSWORD: ${OPENVPN_PASSWORD:-}
+    volumes:
+      - ./state/vpn/wg0.conf:/run/secrets/wg0.conf:ro
+    ports:
+      - 8122:8122   # qbt-vpn WebUI
+    depends_on:
+      vpn-config: {condition: service_completed_successfully}
+
+  qbt-vpn:
+    image: qbittorrentofficial/qbittorrent-nox:5.3.0-2
+    restart: unless-stopped
+    network_mode: service:gluetun
+    stop_grace_period: 30s
+    environment:
+      <<: *qbt-env
+      QBT_WEBUI_PORT: 8122
+      QBT_TORRENTING_PORT: 6882
+      TT_INSTANCE: qbt-vpn
+    volumes:
+      - *storage
+      - ./state/qbt-vpn:/config
+      - ./hooks:/hooks:ro
+    depends_on:
+      gluetun: {condition: service_healthy}
+
+  qbt-raw:
+    image: qbittorrentofficial/qbittorrent-nox:5.3.0-2
+    restart: unless-stopped
+    stop_grace_period: 30s
+    environment:
+      <<: *qbt-env
+      QBT_WEBUI_PORT: 8121
+      QBT_TORRENTING_PORT: 6881
+      TT_INSTANCE: qbt-raw
+    volumes:
+      - *storage
+      - ./state/qbt-raw:/config
+      - ./hooks:/hooks:ro
+    ports:
+      - 8121:8121
+      - 6881:6881
+      - 6881:6881/udp
