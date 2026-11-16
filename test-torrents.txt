@@ -1,0 +1,9 @@
+# instance  v1-infohash                               .torrent URL (archive.org: webseeded, finishes with zero peers)
+# qbt-raw: what the ISP sees. Hip, tiny, and one of them twice (same ISO, different item, different hash).
+qbt-raw  09cace1498ea16b0c4d2c412c41a1b6116f9f0ae  https://archive.org/download/nanolinux-1.3/nanolinux-1.3_archive.torrent
+qbt-raw  4f2410ffe16ce332c77bf41db82ca4d162690892  https://archive.org/download/nanolinux-1.3_14mb/nanolinux-1.3_14mb_archive.torrent
+qbt-raw  19f13ac2519b70a34b903bc237d552333741a9f8  https://archive.org/download/nanolinux64-1.3_202109/nanolinux64-1.3_202109_archive.torrent
+# qbt-vpn: what you secretly desire.
+qbt-vpn  fe5e0a71d4de0e4eab40bd5bd15a86051dc19d59  https://archive.org/download/TinyCore-11.1/TinyCore-11.1_archive.torrent
+qbt-vpn  c441233929bbbc2f2b9575cad9f8ced3fb8aa572  https://archive.org/download/tiny-core-14.0/tiny-core-14.0_archive.torrent
+qbt-vpn  76f8a6b9dd37d34f7b527737e1cf72360c9c5ea6  https://archive.org/download/tiny-core-current_202412/tiny-core-current_202412_archive.torrent
