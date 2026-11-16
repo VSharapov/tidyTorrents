@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""penguinarr: the *arr for penguins. Groups every torrent in btih/ by the first word of its name
+and rebuilds the library as one absolute symlink per file (files/ and extras/ merged).
+Needs no TMDB. Has never heard of TVDB. Runs on the host: penguinarr/penguinarr"""
+import os, re, sys
+from pathlib import Path
+
+repo = Path(__file__).resolve().parent.parent
+dotenv = repo / '.env'
+env = dict(l.split('=', 1) for l in dotenv.read_text().splitlines()
+           if '=' in l and not l.startswith('#')) if dotenv.exists() else {}
+setting = lambda k, default: Path(os.environ.get(k) or env.get(k) or default)
+storage = setting('TT_STORAGE', repo / 'my-beloved-linux-iso-collection')
+library = setting('TT_LIBRARY', repo / 'penguinarr' / 'library')
+
+def series(name):  # "TinyCore-11.1" -> tinycore, "tiny-core-14.0" -> tiny. Close enough.
+    m = re.match(r'[a-z]+', name.lower())
+    return m.group() if m else name
+
+# Forget the links we made last time; leave anything else in the library alone.
+for dirpath, _, files in os.walk(library, topdown=False):
+    for f in files:
+        p = Path(dirpath, f)
+        if p.is_symlink() and os.readlink(p).startswith(str(storage)):
+            p.unlink()
+    if Path(dirpath) != library and not os.listdir(dirpath):
+        os.rmdir(dirpath)
+
+n = 0
+for t in sorted((storage / 'btih').iterdir()):
+    names = sorted(os.listdir(t / 'files')) if (t / 'files').is_dir() else []
+    if not names:
+        continue
+    for part in ('files', 'extras'):
+        for src in sorted((t / part).rglob('*')):
+            if src.is_dir():
+                continue
+            link = library / series(names[0]) / src.relative_to(t / part)
+            if link.is_symlink() or link.exists():
+                print(f'collision, skipped: {link}', file=sys.stderr)
+                continue
+            link.parent.mkdir(parents=True, exist_ok=True)
+            link.symlink_to(src)
+            n += 1
+print(f'penguinarr: imported {n} files into {library}. No metadata was scraped. None was needed.')
