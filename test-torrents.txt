@@ -1,9 +1,11 @@
 # instance  v1-infohash                               .torrent URL (archive.org: webseeded, finishes with zero peers)
-# qbt-raw: what the ISP sees. Hip, tiny, and one of them twice (same ISO, different item, different hash).
-qbt-raw  09cace1498ea16b0c4d2c412c41a1b6116f9f0ae  https://archive.org/download/nanolinux-1.3/nanolinux-1.3_archive.torrent
-qbt-raw  4f2410ffe16ce332c77bf41db82ca4d162690892  https://archive.org/download/nanolinux-1.3_14mb/nanolinux-1.3_14mb_archive.torrent
+# Picked so each ISO ends on a piece boundary: archive.org rewrites its _meta files, so a piece shared
+# with them can never verify. The hook skips those files.
+# qbt-raw: what the ISP sees.
 qbt-raw  19f13ac2519b70a34b903bc237d552333741a9f8  https://archive.org/download/nanolinux64-1.3_202109/nanolinux64-1.3_202109_archive.torrent
-# qbt-vpn: what you secretly desire.
+qbt-raw  967b11cdc44832a8a9c60941e63e8823d18d3882  https://archive.org/download/tiny-core-pure-64-16.2/tiny-core-pure-64-16.2_archive.torrent
+qbt-raw  ca14ea42ae09a833e71f1ce60d74de8310326771  https://archive.org/download/tiny-core-current_202609/tiny-core-current_202609_archive.torrent
+# qbt-vpn: what you secretly desire. 17.1 is the same ISO as qbt-raw's 2026-09 "current", under another hash.
 qbt-vpn  fe5e0a71d4de0e4eab40bd5bd15a86051dc19d59  https://archive.org/download/TinyCore-11.1/TinyCore-11.1_archive.torrent
-qbt-vpn  c441233929bbbc2f2b9575cad9f8ced3fb8aa572  https://archive.org/download/tiny-core-14.0/tiny-core-14.0_archive.torrent
 qbt-vpn  76f8a6b9dd37d34f7b527737e1cf72360c9c5ea6  https://archive.org/download/tiny-core-current_202412/tiny-core-current_202412_archive.torrent
+qbt-vpn  41581ca752e61563ad085dd985669cdbaf7205a0  https://archive.org/download/tinycore17.1/tinycore17.1_archive.torrent
