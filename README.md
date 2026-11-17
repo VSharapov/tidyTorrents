@@ -35,7 +35,7 @@ know which distros you're into. But an ISP that sees *no* torrenting gets suspic
   NanoLinux64 and Tiny Core Pure64. Let them conclude you are cool.
 - **qbt-vpn**: behind a VPN, for secretly torrenting the boring Linux ISOs you actually desire.
 
-Both write to the same `btih/`. Don't add the same torrent to both. If you do, whatever happens happens.
+Both write to the same `btih/`. What happens if you add the same torrent to both? IDK ¯\\\_(ツ)\_/¯
 
 The VPN is **Cloudflare WARP** by default: registered anonymously on first start, no signup, no
 data cap. Cloudflare keeps logs, and says itself that WARP "is not designed to hide your identity".
