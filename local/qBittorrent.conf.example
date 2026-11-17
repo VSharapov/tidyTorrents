@@ -1,0 +1,8 @@
+# Copy to local/qBittorrent.conf. Only the keys you list here are changed, on every start, in both
+# clients. Speeds are KiB/s; 0 = unlimited.
+# Example: trickle at 69 KiB/s by default, and the WebUI turtle button (alternative limits) means full speed.
+[BitTorrent]
+Session\GlobalDLSpeedLimit=69
+Session\GlobalUPSpeedLimit=69
+Session\AlternativeGlobalDLSpeedLimit=0
+Session\AlternativeGlobalUPSpeedLimit=0

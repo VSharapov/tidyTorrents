@@ -53,6 +53,7 @@ services:
       - ./state/qbt-vpn:/config
       - ./hooks:/hooks:ro
       - ./qbt:/tt:ro
+      - ./local:/tt-local:ro
     depends_on:
       gluetun: {condition: service_healthy}
 
@@ -68,6 +69,7 @@ services:
       - ./state/qbt-raw:/config
       - ./hooks:/hooks:ro
       - ./qbt:/tt:ro
+      - ./local:/tt-local:ro
     ports:
       - 8121:8121
       - 6881:6881
