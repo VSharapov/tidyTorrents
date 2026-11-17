@@ -21,6 +21,7 @@ services:
       TT_VPN: ${TT_VPN:-warp}
     volumes:
       - ./vpn:/vpn:ro
+      - ./local:/local:ro
       - ./state/vpn:/out
 
   gluetun:
